@@ -9,6 +9,8 @@ app.set('views', path.join(__dirname, 'views'))
 const key = 'fa68c088f0942c8ba535f1800b9c776e';
 let city ='Tartu'
 
+app.use(express.json());
+app.use(express.urlencoded({extended : true}));
 
 app.get('/', function(req,res) {
 	fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`)
@@ -25,6 +27,11 @@ app.get('/', function(req,res) {
 			temp: temp
 		})
 	})
+})
+
+app.post('/', function(req,res){
+	console.log(req.body)
+	res.redirect('/')
 })
 
 app.listen(3000)
