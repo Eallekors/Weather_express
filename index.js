@@ -21,7 +21,8 @@ const getWeatherDataPromise = (url) => {
 		let result = {
 			description: description,
 			city: city,
-			temp: temp
+			temp: temp,
+			error: null
 			}
 			resolve(result)
 		})
@@ -39,10 +40,16 @@ app.all('/', function(req,res) {
 	if(req.method == 'GET'){
 		city = 'Tartu'
 	}
+	if(req.method == 'POST'){ 
+		city = req.body.cityname
+	}
 	let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`
 	getWeatherDataPromise(url)
 	.then((data)=> {
 		res.render('index',data)
+	})
+	.catch(error => {
+		res.render('index', {error: 'Problem with getting data, try again'})
 	})
 })
 
